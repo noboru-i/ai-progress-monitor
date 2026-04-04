@@ -53,19 +53,7 @@ hooks/
 
 ## hooks セットアップ（~/.claude/settings.json）
 
-```json
-{
-  "hooks": {
-    "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
-    "PreToolUse":       [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
-    "PostToolUse":      [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
-    "Notification":     [{"matcher": "idle_prompt", "hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
-    "Stop":             [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
-    "SessionStart":     [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
-    "SessionEnd":       [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}]
-  }
-}
-```
+詳細は [docs/setup.md](docs/setup.md) を参照してください。
 
 ---
 

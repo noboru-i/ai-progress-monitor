@@ -67,8 +67,12 @@ class StatusStore: ObservableObject {
             // 次のPreToolUseかStopが来るまでtoolRunningのまま維持
 
         case "Notification":
-            // matcher: idle_prompt で設定した場合のみここに到達
-            session.status = .waitingInput
+            if event.notificationType == "permission_prompt" {
+                session.status = .permissionPrompt
+            } else {
+                // matcher: idle_prompt で設定した場合のみここに到達
+                session.status = .waitingInput
+            }
 
         case "Stop":
             session.status = .done
@@ -127,7 +131,7 @@ class StatusStore: ObservableObject {
     }
 
     var hasAlert: Bool {
-        sessions.values.contains { $0.status == .waitingInput }
+        sessions.values.contains { $0.status == .waitingInput || $0.status == .permissionPrompt }
     }
 
 }

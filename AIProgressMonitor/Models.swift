@@ -16,53 +16,58 @@ struct SessionState: Identifiable {
         case idle
         case thinking
         case toolRunning
-        case waitingInput   // Notification(idle_prompt) 受信時
+        case waitingInput       // Notification(idle_prompt) 受信時
+        case permissionPrompt   // Notification(permission_prompt) 受信時
         case done
 
         var icon: String {
             switch self {
-            case .idle:         return "minus.circle"
-            case .thinking:     return "brain"
-            case .toolRunning:  return "gear"
-            case .waitingInput: return "exclamationmark.circle.fill"
-            case .done:         return "checkmark.circle"
+            case .idle:              return "minus.circle"
+            case .thinking:          return "brain"
+            case .toolRunning:       return "gear"
+            case .waitingInput:      return "exclamationmark.circle.fill"
+            case .permissionPrompt:  return "lock.circle.fill"
+            case .done:              return "checkmark.circle"
             }
         }
 
         var color: Color {
             switch self {
-            case .idle:         return .gray
-            case .thinking:     return .blue
-            case .toolRunning:  return .blue
-            case .waitingInput: return .orange
-            case .done:         return .gray
+            case .idle:              return .gray
+            case .thinking:          return .blue
+            case .toolRunning:       return .blue
+            case .waitingInput:      return .orange
+            case .permissionPrompt:  return .orange
+            case .done:              return .gray
             }
         }
 
         /// 低いほど重要（コンパクト表示の代表選択・ソートに使用）
         var priority: Int {
             switch self {
-            case .waitingInput: return 0
-            case .toolRunning:  return 1
-            case .thinking:     return 2
-            case .done:         return 3
-            case .idle:         return 4
+            case .permissionPrompt: return 0
+            case .waitingInput:     return 1
+            case .toolRunning:      return 2
+            case .thinking:         return 3
+            case .done:             return 4
+            case .idle:             return 5
             }
         }
     }
 
     var statusText: String {
         switch status {
-        case .idle:         return "idle"
-        case .thinking:     return model.map { "thinking... (\($0))" } ?? "thinking..."
+        case .idle:              return "idle"
+        case .thinking:          return model.map { "thinking... (\($0))" } ?? "thinking..."
         case .toolRunning:
             if let name = toolName, let d = detail, !d.isEmpty {
                 let truncated = d.count > 40 ? String(d.prefix(40)) + "…" : d
                 return "\(name): \(truncated)"
             }
             return toolName ?? "running"
-        case .waitingInput: return "waiting for input"
-        case .done:         return "done"
+        case .waitingInput:      return "waiting for input"
+        case .permissionPrompt:  return "permission required"
+        case .done:              return "done"
         }
     }
 

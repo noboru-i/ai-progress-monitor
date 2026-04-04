@@ -10,6 +10,7 @@ struct HookEvent: Codable {
     let toolName: String?
     let toolDetail: String?
     let model: String?
+    let notificationType: String?
     let timestamp: TimeInterval
 
     enum CodingKeys: String, CodingKey {
@@ -19,6 +20,7 @@ struct HookEvent: Codable {
         case toolName = "tool_name"
         case toolDetail = "tool_detail"
         case model
+        case notificationType = "notification_type"
         case timestamp
     }
 }

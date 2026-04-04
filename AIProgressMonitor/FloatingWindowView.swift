@@ -107,8 +107,8 @@ struct SessionRow: View {
                 Text(badge).font(.caption2).foregroundStyle(.orange)
             }
 
-            if session.status == .waitingInput {
-                WaitingIndicator()
+            if session.status == .waitingInput || session.status == .permissionPrompt {
+                WaitingIndicator(color: session.status.color, icon: session.status.icon)
             } else {
                 Image(systemName: session.status.icon)
                     .foregroundStyle(session.status.color)
@@ -129,13 +129,15 @@ struct SessionRow: View {
     }
 }
 
-// 入力待ちパルスインジケーター
+// ユーザー対応が必要なパルスインジケーター
 struct WaitingIndicator: View {
+    let color: Color
+    let icon: String
     @State private var pulse = false
 
     var body: some View {
-        Image(systemName: "exclamationmark.circle.fill")
-            .foregroundStyle(.orange)
+        Image(systemName: icon)
+            .foregroundStyle(color)
             .frame(width: 14)
             .scaleEffect(pulse ? 1.2 : 1.0)
             .onAppear {

@@ -8,7 +8,10 @@
 #       "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
 #       "PreToolUse":       [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
 #       "PostToolUse":      [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
-#       "Notification":     [{"matcher": "idle_prompt", "hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
+#       "Notification":     [
+#         {"matcher": "idle_prompt",       "hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]},
+#         {"matcher": "permission_prompt", "hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}
+#       ],
 #       "Stop":             [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
 #       "SessionStart":     [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}],
 #       "SessionEnd":       [{"hooks": [{"type": "command", "command": "/path/to/claude-code-hook.sh"}]}]
@@ -49,6 +52,7 @@ event = {
     "tool_name": hook_data.get("tool_name"),
     "tool_detail": tool_detail,
     "model": hook_data.get("model"),
+    "notification_type": hook_data.get("message"),
     "timestamp": time.time(),
 }
 
