@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		AA000001 /* OtelAIMonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100001 /* OtelAIMonitorApp.swift */; };
 		AA000002 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100002 /* Models.swift */; };
-		AA000003 /* OTLPReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100003 /* OTLPReceiver.swift */; };
 		AA000004 /* StatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100004 /* StatusStore.swift */; };
+		AA000007 /* HookSocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100007 /* HookSocketServer.swift */; };
 		AA000005 /* FloatingWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100005 /* FloatingWindowView.swift */; };
 		AA000006 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100006 /* MenuBarView.swift */; };
 /* End PBXBuildFile section */
@@ -18,8 +18,8 @@
 /* Begin PBXFileReference section */
 		AA100001 /* OtelAIMonitorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtelAIMonitorApp.swift; sourceTree = "<group>"; };
 		AA100002 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		AA100003 /* OTLPReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTLPReceiver.swift; sourceTree = "<group>"; };
 		AA100004 /* StatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusStore.swift; sourceTree = "<group>"; };
+		AA100007 /* HookSocketServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSocketServer.swift; sourceTree = "<group>"; };
 		AA100005 /* FloatingWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingWindowView.swift; sourceTree = "<group>"; };
 		AA100006 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		AA200001 /* OtelAIMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OtelAIMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,7 +50,7 @@
 			children = (
 				AA100001 /* OtelAIMonitorApp.swift */,
 				AA100002 /* Models.swift */,
-				AA100003 /* OTLPReceiver.swift */,
+				AA100007 /* HookSocketServer.swift */,
 				AA100004 /* StatusStore.swift */,
 				AA100005 /* FloatingWindowView.swift */,
 				AA100006 /* MenuBarView.swift */,
@@ -137,7 +137,7 @@
 			files = (
 				AA000001 /* OtelAIMonitorApp.swift in Sources */,
 				AA000002 /* Models.swift in Sources */,
-				AA000003 /* OTLPReceiver.swift in Sources */,
+				AA000007 /* HookSocketServer.swift in Sources */,
 				AA000004 /* StatusStore.swift in Sources */,
 				AA000005 /* FloatingWindowView.swift in Sources */,
 				AA000006 /* MenuBarView.swift in Sources */,

@@ -19,49 +19,65 @@ struct FloatingWindowView: View {
                 .shadow(radius: 4)
         )
         .onTapGesture { withAnimation(.easeInOut(duration: 0.15)) { isExpanded.toggle() } }
-        .frame(minWidth: 280)
+        .frame(minWidth: 300)
     }
 }
 
-// コンパクト: 各ソース1行
+// コンパクト: プロジェクトごとに1行
 struct CompactView: View {
     @EnvironmentObject var store: StatusStore
 
     var body: some View {
         Group {
-            if let cc = store.claudeRepresentative {
-                SessionRow(session: cc, prefix: "CC",
-                           badge: store.claudeSessions.count > 1 ? "×\(store.claudeSessions.count)" : nil)
-            }
-            if let cp = store.copilotRepresentative {
-                SessionRow(session: cp, prefix: "CP",
-                           badge: store.copilotSessions.count > 1 ? "×\(store.copilotSessions.count)" : nil)
-            }
-            if store.claudeRepresentative == nil && store.copilotRepresentative == nil {
+            if store.projectGroups.isEmpty {
                 Text("idle").foregroundStyle(.secondary).font(.caption)
+            } else {
+                ForEach(store.projectGroups, id: \.projectName) { group in
+                    SessionRow(
+                        session: group.representative,
+                        prefix: group.projectName,
+                        badge: group.count > 1 ? "×\(group.count)" : nil
+                    )
+                }
             }
         }
     }
 }
 
-// 拡張: 全セッション
+// 展開: 全セッションをプロジェクト別に表示
 struct ExpandedView: View {
     @EnvironmentObject var store: StatusStore
 
+    // プロジェクト名でグループ化（順序保持）
+    private var grouped: [(projectName: String, sessions: [SessionState])] {
+        var seen: [String] = []
+        var result: [(String, [SessionState])] = []
+        for s in store.activeSessions {
+            if !seen.contains(s.projectName) {
+                seen.append(s.projectName)
+                result.append((s.projectName, []))
+            }
+            if let idx = result.firstIndex(where: { $0.0 == s.projectName }) {
+                result[idx].1.append(s)
+            }
+        }
+        return result
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if !store.claudeSessions.isEmpty {
-                Label("Claude Code", systemImage: "terminal").font(.caption2).foregroundStyle(.secondary)
-                ForEach(store.claudeSessions) { s in
-                    SessionRow(session: s, prefix: "[\(s.shortId)]", badge: nil)
-                }
-            }
-            if !store.copilotSessions.isEmpty {
-                Divider()
-                Label("Copilot", systemImage: "chevron.left.forwardslash.chevron.right")
-                    .font(.caption2).foregroundStyle(.secondary)
-                ForEach(store.copilotSessions) { s in
-                    SessionRow(session: s, prefix: "[\(s.shortId)]", badge: nil)
+            if grouped.isEmpty {
+                Text("idle").foregroundStyle(.secondary).font(.caption)
+            } else {
+                ForEach(grouped, id: \.projectName) { (name, sessions) in
+                    Label(name, systemImage: "folder").font(.caption2).foregroundStyle(.secondary)
+                    ForEach(sessions) { s in
+                        SessionRow(session: s, prefix: "[\(s.shortId)]", badge: nil)
+                            .padding(.leading, 8)
+                    }
+                    if grouped.last?.projectName != name {
+                        Divider()
+                    }
                 }
             }
         }
@@ -76,15 +92,53 @@ struct SessionRow: View {
 
     var body: some View {
         HStack(spacing: 6) {
-            Text(prefix).font(.caption2.bold()).foregroundStyle(.secondary).frame(width: 28, alignment: .leading)
-            if let badge { Text(badge).font(.caption2).foregroundStyle(.orange) }
-            Image(systemName: session.status.icon).foregroundStyle(session.status.color).frame(width: 14)
-            Text(session.statusText).font(.callout).lineLimit(1).truncationMode(.tail)
+            Text(prefix)
+                .font(.caption2.bold())
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .frame(maxWidth: 100, alignment: .leading)
+
+            if let badge {
+                Text(badge).font(.caption2).foregroundStyle(.orange)
+            }
+
+            if session.status == .waitingInput {
+                WaitingIndicator()
+            } else {
+                Image(systemName: session.status.icon)
+                    .foregroundStyle(session.status.color)
+                    .frame(width: 14)
+            }
+
+            Text(session.statusText)
+                .font(.callout)
+                .lineLimit(1)
+                .truncationMode(.tail)
+
             Spacer()
+
             if session.status != .idle {
                 ElapsedTimerView(since: session.lastEventAt)
             }
         }
+    }
+}
+
+// 入力待ちパルスインジケーター
+struct WaitingIndicator: View {
+    @State private var pulse = false
+
+    var body: some View {
+        Image(systemName: "exclamationmark.circle.fill")
+            .foregroundStyle(.orange)
+            .frame(width: 14)
+            .scaleEffect(pulse ? 1.2 : 1.0)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true)) {
+                    pulse = true
+                }
+            }
     }
 }
 

@@ -2,38 +2,21 @@ import Foundation
 import SwiftUI
 
 struct SessionState: Identifiable {
-    var id: String           // OTelの session.id
-    var source: Source
+    var id: String           // session_id (from hook JSON)
+    var projectName: String  // basename of projectDir
+    var projectDir: String   // CLAUDE_PROJECT_DIR
     var status: Status
     var toolName: String?
-    var detail: String?      // Bashコマンド等（OTEL_LOG_TOOL_DETAILS=1 時）
+    var detail: String?      // Bashコマンド等
     var lastEventAt: Date
     var startedAt: Date
     var model: String?
 
-    enum Source: String {
-        case claudeCode = "claude-code"
-        case copilot    = "copilot-chat"
-
-        var label: String {
-            switch self {
-            case .claudeCode: return "CC"
-            case .copilot:    return "CP"
-            }
-        }
-        var displayName: String {
-            switch self {
-            case .claudeCode: return "Claude Code"
-            case .copilot:    return "Copilot"
-            }
-        }
-    }
-
     enum Status {
         case idle
-        case thinking     // api_request 受信後
-        case toolRunning  // tool_result 受信後
-        case waitingInput // 30秒以上無音 かつ 直前が thinking/toolRunning
+        case thinking
+        case toolRunning
+        case waitingInput   // Notification(idle_prompt) 受信時
         case done
 
         var icon: String {
@@ -41,7 +24,7 @@ struct SessionState: Identifiable {
             case .idle:         return "minus.circle"
             case .thinking:     return "brain"
             case .toolRunning:  return "gear"
-            case .waitingInput: return "exclamationmark.circle"
+            case .waitingInput: return "exclamationmark.circle.fill"
             case .done:         return "checkmark.circle"
             }
         }
@@ -72,12 +55,32 @@ struct SessionState: Identifiable {
         switch status {
         case .idle:         return "idle"
         case .thinking:     return model.map { "thinking... (\($0))" } ?? "thinking..."
-        case .toolRunning:  return toolName ?? "running"
-        case .waitingInput: return "⚠ 入力待ち"
+        case .toolRunning:
+            if let name = toolName, let d = detail, !d.isEmpty {
+                let truncated = d.count > 40 ? String(d.prefix(40)) + "…" : d
+                return "\(name): \(truncated)"
+            }
+            return toolName ?? "running"
+        case .waitingInput: return "waiting for input"
         case .done:         return "done"
         }
     }
 
-    /// セッションIDの短縮表示（末尾4文字）
     var shortId: String { String(id.suffix(4)) }
 }
+
+// MARK: - Equatable
+
+extension SessionState: Equatable {
+    static func == (lhs: SessionState, rhs: SessionState) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.projectName == rhs.projectName &&
+        lhs.status == rhs.status &&
+        lhs.toolName == rhs.toolName &&
+        lhs.detail == rhs.detail &&
+        lhs.lastEventAt == rhs.lastEventAt &&
+        lhs.model == rhs.model
+    }
+}
+
+extension SessionState.Status: Equatable {}

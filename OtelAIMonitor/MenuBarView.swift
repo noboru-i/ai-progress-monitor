@@ -8,9 +8,9 @@ struct MenuBarView: View {
             ExpandedView().environmentObject(store)
             Divider()
             HStack {
-                Text("OTLP: localhost:4318").font(.caption).foregroundStyle(.secondary)
+                Text("AI Progress Monitor").font(.caption).foregroundStyle(.secondary)
                 Spacer()
-                Button("終了") { NSApplication.shared.terminate(nil) }
+                Button("Quit") { NSApplication.shared.terminate(nil) }
                     .buttonStyle(.plain).font(.caption)
             }
         }
