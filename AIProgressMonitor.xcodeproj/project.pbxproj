@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA000001 /* OtelAIMonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100001 /* OtelAIMonitorApp.swift */; };
+		AA000001 /* AIProgressMonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100001 /* AIProgressMonitorApp.swift */; };
 		AA000002 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100002 /* Models.swift */; };
 		AA000004 /* StatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100004 /* StatusStore.swift */; };
 		AA000007 /* HookSocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100007 /* HookSocketServer.swift */; };
@@ -16,13 +16,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AA100001 /* OtelAIMonitorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtelAIMonitorApp.swift; sourceTree = "<group>"; };
+		AA100001 /* AIProgressMonitorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProgressMonitorApp.swift; sourceTree = "<group>"; };
 		AA100002 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		AA100004 /* StatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusStore.swift; sourceTree = "<group>"; };
 		AA100007 /* HookSocketServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSocketServer.swift; sourceTree = "<group>"; };
 		AA100005 /* FloatingWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingWindowView.swift; sourceTree = "<group>"; };
 		AA100006 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
-		AA200001 /* OtelAIMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OtelAIMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA200001 /* AIProgressMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIProgressMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA300001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -40,15 +40,15 @@
 		AA500001 = {
 			isa = PBXGroup;
 			children = (
-				AA500002 /* OtelAIMonitor */,
+				AA500002 /* AIProgressMonitor */,
 				AA500003 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		AA500002 /* OtelAIMonitor */ = {
+		AA500002 /* AIProgressMonitor */ = {
 			isa = PBXGroup;
 			children = (
-				AA100001 /* OtelAIMonitorApp.swift */,
+				AA100001 /* AIProgressMonitorApp.swift */,
 				AA100002 /* Models.swift */,
 				AA100007 /* HookSocketServer.swift */,
 				AA100004 /* StatusStore.swift */,
@@ -56,13 +56,13 @@
 				AA100006 /* MenuBarView.swift */,
 				AA300001 /* Info.plist */,
 			);
-			path = OtelAIMonitor;
+			path = AIProgressMonitor;
 			sourceTree = "<group>";
 		};
 		AA500003 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AA200001 /* OtelAIMonitor.app */,
+				AA200001 /* AIProgressMonitor.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,9 +70,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AA600001 /* OtelAIMonitor */ = {
+		AA600001 /* AIProgressMonitor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA700001 /* Build configuration list for PBXNativeTarget "OtelAIMonitor" */;
+			buildConfigurationList = AA700001 /* Build configuration list for PBXNativeTarget "AIProgressMonitor" */;
 			buildPhases = (
 				AA800001 /* Sources */,
 				AA400001 /* Frameworks */,
@@ -82,9 +82,9 @@
 			);
 			dependencies = (
 			);
-			name = OtelAIMonitor;
-			productName = OtelAIMonitor;
-			productReference = AA200001 /* OtelAIMonitor.app */;
+			name = AIProgressMonitor;
+			productName = AIProgressMonitor;
+			productReference = AA200001 /* AIProgressMonitor.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,7 +102,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AA700002 /* Build configuration list for PBXProject "OtelAIMonitor" */;
+			buildConfigurationList = AA700002 /* Build configuration list for PBXProject "AIProgressMonitor" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -115,7 +115,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AA600001 /* OtelAIMonitor */,
+				AA600001 /* AIProgressMonitor */,
 			);
 		};
 /* End PBXProject section */
@@ -135,7 +135,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA000001 /* OtelAIMonitorApp.swift in Sources */,
+				AA000001 /* AIProgressMonitorApp.swift in Sources */,
 				AA000002 /* Models.swift in Sources */,
 				AA000007 /* HookSocketServer.swift in Sources */,
 				AA000004 /* StatusStore.swift in Sources */,
@@ -158,14 +158,14 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = OtelAIMonitor/Info.plist;
+				INFOPLIST_FILE = AIProgressMonitor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.OtelAIMonitor";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.noboru-i.AIProgressMonitor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -183,14 +183,14 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = OtelAIMonitor/Info.plist;
+				INFOPLIST_FILE = AIProgressMonitor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.OtelAIMonitor";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.noboru-i.AIProgressMonitor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -317,7 +317,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AA700001 /* Build configuration list for PBXNativeTarget "OtelAIMonitor" */ = {
+		AA700001 /* Build configuration list for PBXNativeTarget "AIProgressMonitor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AAB00001 /* Debug */,
@@ -326,7 +326,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA700002 /* Build configuration list for PBXProject "OtelAIMonitor" */ = {
+		AA700002 /* Build configuration list for PBXProject "AIProgressMonitor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AAB00003 /* Debug */,
