@@ -7,8 +7,8 @@ AI Progress Monitor のセットアップ手順です。
 ## 1. アプリのビルド・起動
 
 ```bash
-git clone https://github.com/noboru-i/otel-ai-monitor
-cd otel-ai-monitor
+git clone https://github.com/noboru-i/ai-progress-monitor
+cd ai-progress-monitor
 open AIProgressMonitor.xcodeproj
 ```
 

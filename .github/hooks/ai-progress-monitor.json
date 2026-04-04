@@ -3,56 +3,56 @@
     "SessionStart": [
       {
         "type": "command",
-        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/otel-ai-monitor/hooks/copilot-hook.sh SessionStart",
+        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/ai-progress-monitor/hooks/copilot-hook.sh SessionStart",
         "timeout": 5
       }
     ],
     "UserPromptSubmit": [
       {
         "type": "command",
-        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/otel-ai-monitor/hooks/copilot-hook.sh UserPromptSubmit",
+        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/ai-progress-monitor/hooks/copilot-hook.sh UserPromptSubmit",
         "timeout": 5
       }
     ],
     "PreToolUse": [
       {
         "type": "command",
-        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/otel-ai-monitor/hooks/copilot-hook.sh PreToolUse",
+        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/ai-progress-monitor/hooks/copilot-hook.sh PreToolUse",
         "timeout": 5
       }
     ],
     "PostToolUse": [
       {
         "type": "command",
-        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/otel-ai-monitor/hooks/copilot-hook.sh PostToolUse",
+        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/ai-progress-monitor/hooks/copilot-hook.sh PostToolUse",
         "timeout": 5
       }
     ],
     "PreCompact": [
       {
         "type": "command",
-        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/otel-ai-monitor/hooks/copilot-hook.sh PreCompact",
+        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/ai-progress-monitor/hooks/copilot-hook.sh PreCompact",
         "timeout": 5
       }
     ],
     "SubagentStart": [
       {
         "type": "command",
-        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/otel-ai-monitor/hooks/copilot-hook.sh SubagentStart",
+        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/ai-progress-monitor/hooks/copilot-hook.sh SubagentStart",
         "timeout": 5
       }
     ],
     "SubagentStop": [
       {
         "type": "command",
-        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/otel-ai-monitor/hooks/copilot-hook.sh SubagentStop",
+        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/ai-progress-monitor/hooks/copilot-hook.sh SubagentStop",
         "timeout": 5
       }
     ],
     "Stop": [
       {
         "type": "command",
-        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/otel-ai-monitor/hooks/copilot-hook.sh Stop",
+        "command": "/Users/noboruishikura/ghq/github.com/noboru-i/ai-progress-monitor/hooks/copilot-hook.sh Stop",
         "timeout": 5
       }
     ]
