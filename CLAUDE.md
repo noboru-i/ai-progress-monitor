@@ -1,4 +1,4 @@
-# AI Status Float — 実装指示書
+# OTel AI Monitor — 実装指示書
 
 ## プロジェクト概要
 
