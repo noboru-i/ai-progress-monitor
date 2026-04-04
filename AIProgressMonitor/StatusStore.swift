@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import AppKit
 import os.log
 
 private let logger = Logger(subsystem: "com.noboru-i.AIProgressMonitor", category: "StatusStore")
@@ -33,6 +34,7 @@ class StatusStore: ObservableObject {
                now.timeIntervalSince(last) >= Self.stalledThreshold {
                 sessions[key]?.status = .stalled
                 changed = true
+                NSSound.beep()
             }
         }
         if changed {
@@ -60,7 +62,11 @@ class StatusStore: ObservableObject {
             session.projectDir = event.projectDir
             // stalled 中に新規イベントが来たら toolRunning に戻してから適用
             if session.status == .stalled { session.status = .toolRunning }
+            let previousStatus = session.status
             applyEvent(event, to: &session)
+            if shouldPlaySound(from: previousStatus, to: session.status) {
+                NSSound.beep()
+            }
             sessions[event.sessionId] = session
         } else {
             var session = SessionState(
@@ -75,11 +81,27 @@ class StatusStore: ObservableObject {
                 model: nil
             )
             applyEvent(event, to: &session)
+            if shouldPlaySound(from: .idle, to: session.status) {
+                NSSound.beep()
+            }
             sessions[event.sessionId] = session
         }
 
         enforceSessionLimit()
         logger.info("Session updated: \(event.sessionId) status=\(String(describing: self.sessions[event.sessionId]?.status))")
+    }
+
+    private func isOrangeStatus(_ status: SessionState.Status) -> Bool {
+        switch status {
+        case .stalled, .waitingInput, .permissionPrompt: return true
+        default: return false
+        }
+    }
+
+    private func shouldPlaySound(from previous: SessionState.Status, to next: SessionState.Status) -> Bool {
+        if !isOrangeStatus(previous) && isOrangeStatus(next) { return true }
+        if previous != .done && next == .done { return true }
+        return false
     }
 
     private func applyEvent(_ event: HookEvent, to session: inout SessionState) {
