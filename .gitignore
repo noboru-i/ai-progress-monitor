@@ -2,8 +2,8 @@
 .claude/settings.local.json
 
 # Xcode
-OtelAIMonitor/OtelAIMonitor.xcodeproj/xcuserdata/
-OtelAIMonitor/OtelAIMonitor.xcodeproj/project.xcworkspace/xcuserdata/
-OtelAIMonitor/build/
+AIProgressMonitor.xcodeproj/xcuserdata/
+AIProgressMonitor.xcodeproj/project.xcworkspace/xcuserdata/
+build/
 DerivedData/
 *.xcuserstate

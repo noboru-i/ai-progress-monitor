@@ -31,8 +31,8 @@ Claude Code ──(hooks: command)──→ hooks/claude-code-hook.sh
 ## ファイル構成
 
 ```
-OtelAIMonitor/
-├── OtelAIMonitorApp.swift    # エントリーポイント・NSWindowセットアップ
+AIProgressMonitor/
+├── AIProgressMonitorApp.swift  # エントリーポイント・NSWindowセットアップ
 ├── HookSocketServer.swift    # Unix socketサーバー・HookEvent定義
 ├── StatusStore.swift         # セッション状態管理（ObservableObject）
 ├── FloatingWindowView.swift  # 浮きウィンドウのSwiftUI View
