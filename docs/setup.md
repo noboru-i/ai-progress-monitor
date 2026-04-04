@@ -27,7 +27,7 @@ chmod +x ~/Library/Application\ Support/AIProgressMonitor/hook.sh
 
 ---
 
-## 3. Claude Code フックの設定
+## 3. Claude Code フックの設定（Claude Code 使用時）
 
 `~/.claude/settings.json` に以下を追加します（既存の `hooks` がある場合はマージしてください）。
 
@@ -52,9 +52,52 @@ chmod +x ~/Library/Application\ Support/AIProgressMonitor/hook.sh
 
 ---
 
+## 3b. VS Code Copilot フックの設定（VS Code Copilot 使用時）
+
+### スクリプトの配置
+
+```bash
+cp hooks/copilot-hook.sh ~/Library/Application\ Support/AIProgressMonitor/copilot-hook.sh
+chmod +x ~/Library/Application\ Support/AIProgressMonitor/copilot-hook.sh
+```
+
+### 設定ファイルの配置
+
+`hooks/copilot-hooks.json` を以下のいずれかにコピーしてください。
+
+**グローバル設定（全プロジェクトに適用）:**
+
+```bash
+mkdir -p ~/.copilot/hooks
+cp hooks/copilot-hooks.json ~/.copilot/hooks/ai-progress-monitor.json
+```
+
+**プロジェクト単位の設定:**
+
+```bash
+mkdir -p .github/hooks
+cp hooks/copilot-hooks.json .github/hooks/ai-progress-monitor.json
+```
+
+設定後は VS Code を再起動すると反映されます。
+
+### Claude Code との差分・制限事項
+
+| 機能 | Claude Code | VS Code Copilot |
+|---|---|---|
+| 思考中・ツール実行中の表示 | ✅ | ✅ |
+| サブエージェント実行の表示 | - | ✅（Subagentとして表示） |
+| 入力待ち・権限確認の表示 | ✅ | ❌（`Notification`イベントなし） |
+| モデル名の表示 | ✅ | ❌（情報なし） |
+| セッション自動削除 | ✅ | ❌（`Stop`後`.done`表示、上限20件で自動evict） |
+
+---
+
 ## 4. 動作確認
 
 アプリが起動している状態で、以下のコマンドでテストデータを送信できます。
+
+**Claude Code フックのテスト:**
 
 ```bash
 echo '{"session_id":"test-1","project_dir":"/Users/you/my-project","event":"PreToolUse","tool_name":"Bash","tool_detail":"npm test","model":null,"timestamp":'$(date +%s)'}' \
@@ -62,6 +105,15 @@ echo '{"session_id":"test-1","project_dir":"/Users/you/my-project","event":"PreT
 ```
 
 フローティングウィンドウに `my-project ⚙ Bash: npm test` と表示されれば成功です。
+
+**Copilot フックスクリプトのテスト:**
+
+```bash
+echo '{"sessionId":"copilot-test-1","cwd":"/Users/you/my-project","hookEventName":"PreToolUse","tool_name":"terminal","tool_input":{"command":"npm test"},"timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' \
+  | ~/Library/Application\ Support/AIProgressMonitor/copilot-hook.sh
+```
+
+stdout に `{"continue": true}` が出力され、フローティングウィンドウに `my-project ⚙ terminal: npm test` と表示されれば成功です。
 
 ---
 

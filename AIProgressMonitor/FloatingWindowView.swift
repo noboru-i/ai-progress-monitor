@@ -107,7 +107,7 @@ struct SessionRow: View {
                 Text(badge).font(.caption2).foregroundStyle(.orange)
             }
 
-            if session.status == .waitingInput || session.status == .permissionPrompt {
+            if session.status == .waitingInput || session.status == .permissionPrompt || session.status == .stalled {
                 WaitingIndicator(color: session.status.color, icon: session.status.icon)
             } else {
                 Image(systemName: session.status.icon)

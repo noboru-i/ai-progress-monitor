@@ -9,7 +9,36 @@ class StatusStore: ObservableObject {
 
     @Published var sessions: [String: SessionState] = [:]
 
-    private init() {}
+    /// toolRunning のまま変化がなければ stalled に切り替える閾値（秒）
+    static let stalledThreshold: TimeInterval = 30
+
+    private var stalledTimer: Timer?
+
+    private init() {
+        stalledTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
+            self?.checkStalledSessions()
+        }
+    }
+
+    deinit {
+        stalledTimer?.invalidate()
+    }
+
+    private func checkStalledSessions() {
+        let now = Date()
+        var changed = false
+        for key in sessions.keys {
+            if sessions[key]?.status == .toolRunning,
+               let last = sessions[key]?.lastEventAt,
+               now.timeIntervalSince(last) >= Self.stalledThreshold {
+                sessions[key]?.status = .stalled
+                changed = true
+            }
+        }
+        if changed {
+            logger.info("Marked stalled sessions")
+        }
+    }
 
     func handleEvent(_ event: HookEvent) {
         let projectName = URL(fileURLWithPath: event.projectDir).lastPathComponent
@@ -29,6 +58,8 @@ class StatusStore: ObservableObject {
             session.lastEventAt = effectiveTime
             session.projectName = projectName
             session.projectDir = event.projectDir
+            // stalled 中に新規イベントが来たら toolRunning に戻してから適用
+            if session.status == .stalled { session.status = .toolRunning }
             applyEvent(event, to: &session)
             sessions[event.sessionId] = session
         } else {

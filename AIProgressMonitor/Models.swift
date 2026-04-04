@@ -16,6 +16,7 @@ struct SessionState: Identifiable {
         case idle
         case thinking
         case toolRunning
+        case stalled            // toolRunning のまま一定時間経過（入力待ち疑い）
         case waitingInput       // Notification(idle_prompt) 受信時
         case permissionPrompt   // Notification(permission_prompt) 受信時
         case done
@@ -25,6 +26,7 @@ struct SessionState: Identifiable {
             case .idle:              return "minus.circle"
             case .thinking:          return "brain"
             case .toolRunning:       return "gear"
+            case .stalled:           return "clock.badge.exclamationmark"
             case .waitingInput:      return "exclamationmark.circle.fill"
             case .permissionPrompt:  return "lock.circle.fill"
             case .done:              return "checkmark.circle"
@@ -36,6 +38,7 @@ struct SessionState: Identifiable {
             case .idle:              return .gray
             case .thinking:          return .blue
             case .toolRunning:       return .blue
+            case .stalled:           return .orange
             case .waitingInput:      return .orange
             case .permissionPrompt:  return .orange
             case .done:              return .gray
@@ -47,10 +50,11 @@ struct SessionState: Identifiable {
             switch self {
             case .permissionPrompt: return 0
             case .waitingInput:     return 1
-            case .toolRunning:      return 2
-            case .thinking:         return 3
-            case .done:             return 4
-            case .idle:             return 5
+            case .stalled:          return 2
+            case .toolRunning:      return 3
+            case .thinking:         return 4
+            case .done:             return 5
+            case .idle:             return 6
             }
         }
     }
@@ -65,6 +69,7 @@ struct SessionState: Identifiable {
                 return "\(name): \(truncated)"
             }
             return toolName ?? "running"
+        case .stalled:           return "stalled (no update)"
         case .waitingInput:      return "waiting for input"
         case .permissionPrompt:  return "permission required"
         case .done:              return "done"
