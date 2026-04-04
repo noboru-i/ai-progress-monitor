@@ -14,29 +14,33 @@ struct FloatingWindowView: View {
         }
         .padding(10)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.ultraThinMaterial)
-                .shadow(radius: 4)
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.black.opacity(0.55))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.white.opacity(0.12), lineWidth: 0.5)
+                )
         )
+        .colorScheme(.dark)
         .onTapGesture { withAnimation(.easeInOut(duration: 0.15)) { isExpanded.toggle() } }
-        .frame(minWidth: 300)
+        .frame(minWidth: 460)
     }
 }
 
-// コンパクト: プロジェクトごとに1行
+// コンパクト: セッションごとに1行
 struct CompactView: View {
     @EnvironmentObject var store: StatusStore
 
     var body: some View {
         Group {
-            if store.projectGroups.isEmpty {
-                Text("idle").foregroundStyle(.secondary).font(.caption)
+            if store.allSessions.isEmpty {
+                Text("no sessions").foregroundStyle(.secondary).font(.caption)
             } else {
-                ForEach(store.projectGroups, id: \.projectName) { group in
+                ForEach(store.allSessions) { session in
                     SessionRow(
-                        session: group.representative,
-                        prefix: group.projectName,
-                        badge: group.count > 1 ? "×\(group.count)" : nil
+                        session: session,
+                        prefix: session.projectName,
+                        badge: nil
                     )
                 }
             }

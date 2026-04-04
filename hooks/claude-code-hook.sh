@@ -23,11 +23,14 @@ SOCKET_PATH="$HOME/Library/Application Support/AIProgressMonitor/monitor.sock"
 # CLAUDE_PROJECT_DIR をエクスポート（Python側で参照）
 export _PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
 
+# stdin のフックデータを読み込み（python3 - <<'PYEOF' だと heredoc が stdin を占有するため）
+export _HOOK_JSON="$(cat)"
+
 /usr/bin/python3 - <<'PYEOF'
 import json, sys, os, socket, time
 
 try:
-    hook_data = json.load(sys.stdin)
+    hook_data = json.loads(os.environ.get("_HOOK_JSON", "{}"))
 except Exception:
     hook_data = {}
 

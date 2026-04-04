@@ -31,9 +31,9 @@ struct SessionState: Identifiable {
 
         var color: Color {
             switch self {
-            case .idle:         return .secondary
+            case .idle:         return .gray
             case .thinking:     return .blue
-            case .toolRunning:  return .green
+            case .toolRunning:  return .blue
             case .waitingInput: return .orange
             case .done:         return .gray
             }

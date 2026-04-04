@@ -34,7 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupFloatingWindow() {
         floatingWindow = NSWindow(
-            contentRect: NSRect(x: 100, y: 100, width: 320, height: 72),
+            contentRect: NSRect(x: 100, y: 100, width: 480, height: 72),
             styleMask:   [.borderless, .resizable],
             backing:     .buffered,
             defer:       false
@@ -43,7 +43,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         floatingWindow.level = .floating
         floatingWindow.isOpaque        = false
         floatingWindow.backgroundColor = .clear
-        floatingWindow.hasShadow       = true
+        floatingWindow.hasShadow       = false
         floatingWindow.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
         floatingWindow.isMovableByWindowBackground = true
 

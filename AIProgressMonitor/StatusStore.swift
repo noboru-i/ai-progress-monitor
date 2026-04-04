@@ -9,11 +9,7 @@ class StatusStore: ObservableObject {
 
     @Published var sessions: [String: SessionState] = [:]
 
-    private var cleanupTimer: Timer?
-
-    private init() {
-        startCleanupTimer()
-    }
+    private init() {}
 
     func handleEvent(_ event: HookEvent) {
         let projectName = URL(fileURLWithPath: event.projectDir).lastPathComponent
@@ -22,6 +18,12 @@ class StatusStore: ObservableObject {
         let effectiveTime = eventTime > now ? now : eventTime
 
         logger.info("handleEvent: event=\(event.event) session=\(event.sessionId) project=\(projectName)")
+
+        if event.event == "SessionEnd" {
+            sessions.removeValue(forKey: event.sessionId)
+            enforceSessionLimit()
+            return
+        }
 
         if var session = sessions[event.sessionId] {
             session.lastEventAt = effectiveTime
@@ -72,13 +74,10 @@ class StatusStore: ObservableObject {
             session.status = .done
 
         case "SessionStart":
-            session.status = .thinking
+            session.status = .idle
             if let model = event.model {
                 session.model = model
             }
-
-        case "SessionEnd":
-            session.status = .done
 
         default:
             break
@@ -118,37 +117,17 @@ class StatusStore: ObservableObject {
             }
     }
 
+    /// 全セッション（idle含む）
+    var allSessions: [SessionState] {
+        sessions.values
+            .sorted {
+                if $0.projectName != $1.projectName { return $0.projectName < $1.projectName }
+                return $0.status.priority < $1.status.priority
+            }
+    }
+
     var hasAlert: Bool {
         sessions.values.contains { $0.status == .waitingInput }
     }
 
-    // MARK: - Cleanup Timer
-
-    private func startCleanupTimer() {
-        cleanupTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
-            self?.runCleanup()
-        }
-    }
-
-    private func runCleanup() {
-        let now = Date()
-        var updated = sessions
-
-        for (key, var session) in updated {
-            let elapsed = now.timeIntervalSince(session.lastEventAt)
-
-            if elapsed >= 10 * 60 {
-                // 10分以上 → 削除
-                updated.removeValue(forKey: key)
-            } else if elapsed >= 5 * 60 {
-                // 5分以上 → idle
-                session.status = .idle
-                updated[key] = session
-            }
-        }
-
-        if updated != sessions {
-            sessions = updated
-        }
-    }
 }
