@@ -70,7 +70,7 @@ OtelAIMonitor/
 
 ```bash
 # セッション1: tool_result
-curl -s -X POST http://localhost:4318/v1/logs \
+curl -v -X POST http://localhost:4318/v1/logs \
   -H "Content-Type: application/json" \
   -d '{
     "resourceLogs": [{
@@ -91,7 +91,7 @@ curl -s -X POST http://localhost:4318/v1/logs \
   }'
 
 # セッション2: api_request（別ターミナル）
-curl -s -X POST http://localhost:4318/v1/logs \
+curl -v -X POST http://localhost:4318/v1/logs \
   -H "Content-Type: application/json" \
   -d '{
     "resourceLogs": [{

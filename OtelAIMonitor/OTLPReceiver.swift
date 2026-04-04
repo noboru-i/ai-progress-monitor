@@ -1,5 +1,8 @@
 import Foundation
 import Network
+import os.log
+
+private let logger = Logger(subsystem: "com.noboru-i.OtelAIMonitor", category: "OTLPReceiver")
 
 struct OTLPEvent {
     let serviceName: String   // resource.attributes["service.name"]
@@ -21,7 +24,18 @@ class OTLPReceiver {
         params.allowLocalEndpointReuse = true
         let nwPort = NWEndpoint.Port(rawValue: port)!
         listener = try NWListener(using: params, on: nwPort)
+        listener?.stateUpdateHandler = { state in
+            switch state {
+            case .ready:
+                logger.info("OTLPReceiver listening on port \(port)")
+            case .failed(let error):
+                logger.error("OTLPReceiver failed: \(error)")
+            default:
+                break
+            }
+        }
         listener?.newConnectionHandler = { [weak self] conn in
+            logger.debug("New connection received")
             self?.handleConnection(conn)
         }
         listener?.start(queue: queue)
@@ -86,7 +100,9 @@ class OTLPReceiver {
         }
 
         let headerEndRange = str.range(of: "\r\n\r\n")!
-        let headerEndIndex = data.distance(from: data.startIndex, to: data.index(data.startIndex, offsetBy: str.distance(from: str.startIndex, to: headerEndRange.upperBound)))
+        // Swift は \r\n を1つの Character として数えるため、
+        // バイトオフセットには utf8.distance を使う必要がある
+        let headerEndIndex = str.utf8.distance(from: str.utf8.startIndex, to: headerEndRange.upperBound)
 
         let bodyData = data.dropFirst(headerEndIndex)
         if bodyData.count < contentLength {
@@ -98,6 +114,8 @@ class OTLPReceiver {
     }
 
     private func handleHTTPRequest(_ request: HTTPRequest, connection: NWConnection) {
+        logger.info("HTTP \(request.method) \(request.path) body=\(request.body.count)bytes")
+
         var events: [OTLPEvent] = []
 
         if request.method == "POST" {
@@ -107,8 +125,14 @@ class OTLPReceiver {
             case "/v1/traces":
                 events = parseTracesBody(request.body)
             default:
+                logger.warning("Unknown path: \(request.path)")
                 break
             }
+        }
+
+        logger.info("Parsed \(events.count) event(s)")
+        for event in events {
+            logger.debug("Event: sessionId=\(event.sessionId) eventName=\(event.eventName ?? "nil") toolName=\(event.toolName ?? "nil")")
         }
 
         let response = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 2\r\nConnection: close\r\n\r\n{}"

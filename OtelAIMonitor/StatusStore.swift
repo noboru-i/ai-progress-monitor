@@ -1,5 +1,8 @@
 import Foundation
 import Combine
+import os.log
+
+private let logger = Logger(subsystem: "com.noboru-i.OtelAIMonitor", category: "StatusStore")
 
 class StatusStore: ObservableObject {
     static let shared = StatusStore()
@@ -13,6 +16,8 @@ class StatusStore: ObservableObject {
     }
 
     func handleEvent(_ event: OTLPEvent) {
+        logger.info("handleEvent: sessionId=\(event.sessionId) service=\(event.serviceName) eventName=\(event.eventName ?? "nil")")
+
         let source: SessionState.Source
         switch event.serviceName.lowercased() {
         case "claude-code", "claudecode":
@@ -49,6 +54,7 @@ class StatusStore: ObservableObject {
         }
 
         enforceSessionLimit(for: source)
+        logger.info("Session updated: \(event.sessionId) status=\(String(describing: self.sessions[event.sessionId]?.status))")
     }
 
     private func applyEvent(_ event: OTLPEvent, to session: inout SessionState) {
