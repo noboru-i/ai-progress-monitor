@@ -117,6 +117,10 @@ class StatusStore: ObservableObject {
         case "PostToolUse":
             session.toolName = event.toolName
             session.detail = event.toolDetail
+            // waitingInput/permissionPrompt 中にPostToolUseが来たらtoolRunningに戻す
+            if session.status == .waitingInput || session.status == .permissionPrompt {
+                session.status = .toolRunning
+            }
             // 次のPreToolUseかStopが来るまでtoolRunningのまま維持
 
         case "Notification":
