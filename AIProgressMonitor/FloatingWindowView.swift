@@ -90,9 +90,11 @@ struct ExpandedView: View {
 
 // 1セッション1行
 struct SessionRow: View {
+    @EnvironmentObject var store: StatusStore
     let session: SessionState
     let prefix: String
     let badge: String?
+    @State private var isHovered = false
 
     var body: some View {
         HStack(spacing: 6) {
@@ -125,7 +127,18 @@ struct SessionRow: View {
             if session.status != .idle {
                 ElapsedTimerView(since: session.lastEventAt)
             }
+
+            Button {
+                store.removeSession(session.id)
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundStyle(isHovered ? Color.white.opacity(0.8) : Color.clear)
+                    .frame(width: 14)
+            }
+            .buttonStyle(.plain)
+            .onHover { isHovered = $0 }
         }
+        .onHover { isHovered = $0 }
     }
 }
 

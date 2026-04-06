@@ -145,6 +145,10 @@ class StatusStore: ObservableObject {
         }
     }
 
+    func removeSession(_ id: String) {
+        sessions.removeValue(forKey: id)
+    }
+
     private func enforceSessionLimit() {
         guard sessions.count > 20 else { return }
         let sorted = sessions.values.sorted { $0.lastEventAt < $1.lastEventAt }
