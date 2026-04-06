@@ -174,7 +174,7 @@ class StatusStore: ObservableObject {
             .filter { $0.status != .idle }
             .sorted {
                 if $0.projectName != $1.projectName { return $0.projectName < $1.projectName }
-                return $0.status.priority < $1.status.priority
+                return $0.startedAt < $1.startedAt
             }
     }
 
@@ -183,7 +183,7 @@ class StatusStore: ObservableObject {
         sessions.values
             .sorted {
                 if $0.projectName != $1.projectName { return $0.projectName < $1.projectName }
-                return $0.status.priority < $1.status.priority
+                return $0.startedAt < $1.startedAt
             }
     }
 
