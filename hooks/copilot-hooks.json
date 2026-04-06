@@ -3,56 +3,56 @@
     "SessionStart": [
       {
         "type": "command",
-        "command": "~/Library/Application Support/AIProgressMonitor/copilot-hook.sh SessionStart",
+        "command": "~/Library/Application\\ Support/AIProgressMonitor/copilot-hook.sh SessionStart",
         "timeout": 5
       }
     ],
     "UserPromptSubmit": [
       {
         "type": "command",
-        "command": "~/Library/Application Support/AIProgressMonitor/copilot-hook.sh UserPromptSubmit",
+        "command": "~/Library/Application\\ Support/AIProgressMonitor/copilot-hook.sh UserPromptSubmit",
         "timeout": 5
       }
     ],
     "PreToolUse": [
       {
         "type": "command",
-        "command": "~/Library/Application Support/AIProgressMonitor/copilot-hook.sh PreToolUse",
+        "command": "~/Library/Application\\ Support/AIProgressMonitor/copilot-hook.sh PreToolUse",
         "timeout": 5
       }
     ],
     "PostToolUse": [
       {
         "type": "command",
-        "command": "~/Library/Application Support/AIProgressMonitor/copilot-hook.sh PostToolUse",
+        "command": "~/Library/Application\\ Support/AIProgressMonitor/copilot-hook.sh PostToolUse",
         "timeout": 5
       }
     ],
     "PreCompact": [
       {
         "type": "command",
-        "command": "~/Library/Application Support/AIProgressMonitor/copilot-hook.sh PreCompact",
+        "command": "~/Library/Application\\ Support/AIProgressMonitor/copilot-hook.sh PreCompact",
         "timeout": 5
       }
     ],
     "SubagentStart": [
       {
         "type": "command",
-        "command": "~/Library/Application Support/AIProgressMonitor/copilot-hook.sh SubagentStart",
+        "command": "~/Library/Application\\ Support/AIProgressMonitor/copilot-hook.sh SubagentStart",
         "timeout": 5
       }
     ],
     "SubagentStop": [
       {
         "type": "command",
-        "command": "~/Library/Application Support/AIProgressMonitor/copilot-hook.sh SubagentStop",
+        "command": "~/Library/Application\\ Support/AIProgressMonitor/copilot-hook.sh SubagentStop",
         "timeout": 5
       }
     ],
     "Stop": [
       {
         "type": "command",
-        "command": "~/Library/Application Support/AIProgressMonitor/copilot-hook.sh Stop",
+        "command": "~/Library/Application\\ Support/AIProgressMonitor/copilot-hook.sh Stop",
         "timeout": 5
       }
     ]

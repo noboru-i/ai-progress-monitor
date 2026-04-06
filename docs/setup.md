@@ -34,16 +34,16 @@ chmod +x ~/Library/Application\ Support/AIProgressMonitor/hook.sh
 ```json
 {
   "hooks": {
-    "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "~/Library/Application Support/AIProgressMonitor/hook.sh"}]}],
-    "PreToolUse":       [{"hooks": [{"type": "command", "command": "~/Library/Application Support/AIProgressMonitor/hook.sh"}]}],
-    "PostToolUse":      [{"hooks": [{"type": "command", "command": "~/Library/Application Support/AIProgressMonitor/hook.sh"}]}],
+    "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "~/Library/Application\\ Support/AIProgressMonitor/hook.sh"}]}],
+    "PreToolUse":       [{"hooks": [{"type": "command", "command": "~/Library/Application\\ Support/AIProgressMonitor/hook.sh"}]}],
+    "PostToolUse":      [{"hooks": [{"type": "command", "command": "~/Library/Application\\ Support/AIProgressMonitor/hook.sh"}]}],
     "Notification":     [
-      {"matcher": "idle_prompt",       "hooks": [{"type": "command", "command": "~/Library/Application Support/AIProgressMonitor/hook.sh"}]},
-      {"matcher": "permission_prompt", "hooks": [{"type": "command", "command": "~/Library/Application Support/AIProgressMonitor/hook.sh"}]}
+      {"matcher": "idle_prompt",       "hooks": [{"type": "command", "command": "~/Library/Application\\ Support/AIProgressMonitor/hook.sh"}]},
+      {"matcher": "permission_prompt", "hooks": [{"type": "command", "command": "~/Library/Application\\ Support/AIProgressMonitor/hook.sh"}]}
     ],
-    "Stop":             [{"hooks": [{"type": "command", "command": "~/Library/Application Support/AIProgressMonitor/hook.sh"}]}],
-    "SessionStart":     [{"hooks": [{"type": "command", "command": "~/Library/Application Support/AIProgressMonitor/hook.sh"}]}],
-    "SessionEnd":       [{"hooks": [{"type": "command", "command": "~/Library/Application Support/AIProgressMonitor/hook.sh"}]}]
+    "Stop":             [{"hooks": [{"type": "command", "command": "~/Library/Application\\ Support/AIProgressMonitor/hook.sh"}]}],
+    "SessionStart":     [{"hooks": [{"type": "command", "command": "~/Library/Application\\ Support/AIProgressMonitor/hook.sh"}]}],
+    "SessionEnd":       [{"hooks": [{"type": "command", "command": "~/Library/Application\\ Support/AIProgressMonitor/hook.sh"}]}]
   }
 }
 ```
