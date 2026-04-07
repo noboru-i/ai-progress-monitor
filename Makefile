@@ -10,7 +10,9 @@ DMG_PATH     = build/$(APP_NAME).dmg
 # コード署名なしでローカルビルド（個人利用向け）
 CODESIGN_FLAGS = CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
 
-.PHONY: all build debug release clean install dmg
+HOOK_DIR = $(HOME)/Library/Application\ Support/AIProgressMonitor
+
+.PHONY: all build debug release clean install dmg setup-hooks
 
 all: release
 
@@ -55,6 +57,17 @@ dmg: release
 		$(DMG_PATH)
 	rm -rf $(DMG_DIR)
 	@echo "Created $(DMG_PATH)"
+
+## フックスクリプトを配置
+setup-hooks:
+	mkdir -p $(HOOK_DIR)
+	cp hooks/claude-code-hook.sh $(HOOK_DIR)/hook.sh
+	chmod +x $(HOOK_DIR)/hook.sh
+	cp hooks/copilot-hook.sh $(HOOK_DIR)/copilot-hook.sh
+	chmod +x $(HOOK_DIR)/copilot-hook.sh
+	mkdir -p $(HOME)/.copilot/hooks
+	cp hooks/copilot-hooks.json $(HOME)/.copilot/hooks/ai-progress-monitor.json
+	@echo "Hooks installed."
 
 ## ビルド成果物を削除
 clean:
