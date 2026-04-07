@@ -12,6 +12,7 @@ struct HookEvent: Codable {
     let model: String?
     let notificationType: String?
     let timestamp: TimeInterval
+    let source: String?
 
     enum CodingKeys: String, CodingKey {
         case sessionId = "session_id"
@@ -22,6 +23,7 @@ struct HookEvent: Codable {
         case model
         case notificationType = "notification_type"
         case timestamp
+        case source
     }
 }
 

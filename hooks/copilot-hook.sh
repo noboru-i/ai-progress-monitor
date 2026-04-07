@@ -79,6 +79,7 @@ event = {
     "model": None,
     "notification_type": None,
     "timestamp": ts,
+    "source": "copilot",
 }
 
 try:

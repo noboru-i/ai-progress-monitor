@@ -54,6 +54,7 @@ event = {
     "model": hook_data.get("model"),
     "notification_type": hook_data.get("message"),
     "timestamp": time.time(),
+    "source": "claude-code",
 }
 
 try:

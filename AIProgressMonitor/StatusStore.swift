@@ -29,7 +29,8 @@ class StatusStore: ObservableObject {
         let now = Date()
         var changed = false
         for key in sessions.keys {
-            if sessions[key]?.status == .toolRunning,
+            if sessions[key]?.source == "copilot",
+               sessions[key]?.status == .toolRunning,
                let last = sessions[key]?.lastEventAt,
                now.timeIntervalSince(last) >= Self.stalledThreshold {
                 sessions[key]?.status = .stalled
@@ -78,7 +79,8 @@ class StatusStore: ObservableObject {
                 detail: nil,
                 lastEventAt: effectiveTime,
                 startedAt: now,
-                model: nil
+                model: nil,
+                source: event.source ?? "claude-code"
             )
             applyEvent(event, to: &session)
             if shouldPlaySound(from: .idle, to: session.status) {
