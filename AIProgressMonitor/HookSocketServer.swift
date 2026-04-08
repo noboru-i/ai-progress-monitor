@@ -74,7 +74,7 @@ class HookSocketServer {
         }
 
         isRunning = true
-        logger.info("Started at \(path)")
+        logger.info("Started at \(path, privacy: .public)")
         queue.async { self.acceptLoop() }
     }
 
@@ -100,7 +100,7 @@ class HookSocketServer {
             logger.warning("Failed to decode hook event")
             return
         }
-        logger.info("event=\(event.event) session=\(event.sessionId) project=\(URL(fileURLWithPath: event.projectDir).lastPathComponent)")
+        logger.info("event=\(event.event, privacy: .public) session=\(event.sessionId, privacy: .public) project=\(URL(fileURLWithPath: event.projectDir).lastPathComponent, privacy: .public)")
         onEvent?(event)
     }
 

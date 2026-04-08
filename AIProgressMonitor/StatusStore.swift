@@ -49,7 +49,7 @@ class StatusStore: ObservableObject {
         let now = Date()
         let effectiveTime = eventTime > now ? now : eventTime
 
-        logger.info("handleEvent: event=\(event.event) session=\(event.sessionId) project=\(projectName)")
+        logger.info("handleEvent: event=\(event.event, privacy: .public) session=\(event.sessionId, privacy: .public) project=\(projectName, privacy: .public)")
 
         if event.event == "SessionEnd" {
             sessions.removeValue(forKey: event.sessionId)
@@ -90,7 +90,7 @@ class StatusStore: ObservableObject {
         }
 
         enforceSessionLimit()
-        logger.info("Session updated: \(event.sessionId) status=\(String(describing: self.sessions[event.sessionId]?.status))")
+        logger.info("Session updated: \(event.sessionId, privacy: .public) status=\(String(describing: self.sessions[event.sessionId]?.status), privacy: .public)")
     }
 
     private func isOrangeStatus(_ status: SessionState.Status) -> Bool {
