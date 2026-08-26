@@ -1,6 +1,6 @@
 # AI Progress Monitor
 
-Claude Code と VS Code Copilot の hooks を使って AI の状態をリアルタイム監視し、  
+Claude Code、VS Code Copilot、Codex CLI の hooks を使って AI の状態をリアルタイム監視し、  
 「どのプロジェクトで・AIが何をしているか・そこから何秒経過しているか」を  
 **常に最前面に浮かぶ小さなウィンドウ**に表示し続けるMacアプリ。
 
@@ -12,9 +12,11 @@ Claude Code と VS Code Copilot の hooks を使って AI の状態をリアル�
 flowchart LR
     CC["Claude Code"] -->|"hooks: command\nstdin JSON + CLAUDE_PROJECT_DIR"| CCH["hooks/claude-code-hook.sh"]
     CP["VS Code Copilot"] -->|"hooks\nstdin JSON (camelCase)"| CPH["hooks/copilot-hook.sh"]
+    CX["Codex CLI"] -->|"hooks\nstdin JSON"| CXH["hooks/codex-hook.sh"]
 
     CCH -->|"Unix domain socket\n(AF_UNIX)"| HSS
     CPH -->|"Unix domain socket\n(AF_UNIX)"| HSS
+    CXH -->|"Unix domain socket\n(AF_UNIX)"| HSS
 
     subgraph app["macOSアプリ"]
         HSS["HookSocketServer"]
@@ -40,7 +42,9 @@ AIProgressMonitor/
 hooks/
 ├── claude-code-hook.sh       # Claude Codeフック用スクリプト
 ├── copilot-hook.sh           # VS Code Copilotフック用スクリプト
-└── copilot-hooks.json        # Copilotフック設定テンプレート
+├── copilot-hooks.json        # Copilotフック設定テンプレート
+├── codex-hook.sh             # Codex CLIフック用スクリプト
+└── codex-hooks.json          # Codex CLIフック設定テンプレート
 ```
 
 ---
@@ -74,3 +78,4 @@ echo '{"session_id":"test-1","project_dir":"/Users/you/my-project","event":"PreT
 - **入力待ち検知**: `Notification(idle_prompt)` フックで明示的に検知（タイマー推定不要）
 - **ウィンドウ操作**: `isMovableByWindowBackground = true` でドラッグ移動可
 - **Copilot対応**: VS Code Copilot hooks経由で対応済み（`hooks/copilot-hook.sh`）。ただし `Notification`/`SessionEnd` イベントがないため、入力待ち検知・セッション自動削除は非対応
+- **Codex対応**: Codex CLI hooks経由で対応済み（`hooks/codex-hook.sh`）。`SessionEnd`はあるがCopilot同様 `idle_prompt` 相当のイベントはないため、入力待ち検知は`stalled`表示（一定時間`toolRunning`のまま変化がない場合）で代替

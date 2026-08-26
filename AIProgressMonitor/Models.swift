@@ -11,7 +11,7 @@ struct SessionState: Identifiable {
     var lastEventAt: Date
     var startedAt: Date
     var model: String?
-    var source: String  // "claude-code" or "copilot"
+    var source: String  // "claude-code" or "copilot" or "codex"
 
     enum Status {
         case idle

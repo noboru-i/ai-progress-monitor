@@ -91,3 +91,62 @@ cp hooks/copilot-hooks.json .github/hooks/ai-progress-monitor.json
 | モデル名の表示 | ✅ | ❌（情報なし） |
 | セッション自動削除 | ✅ | ❌（`Stop`後`.done`表示、上限20件で自動evict） |
 
+---
+
+## 4. Codex CLI のセットアップ
+
+### 4-1. フックスクリプトの配置
+
+```bash
+cp hooks/codex-hook.sh ~/Library/Application\ Support/AIProgressMonitor/codex-hook.sh
+chmod +x ~/Library/Application\ Support/AIProgressMonitor/codex-hook.sh
+```
+
+### 4-2. フック設定ファイルの配置
+
+`hooks/codex-hooks.json` を以下のいずれかにコピーしてください。
+
+**グローバル設定（全プロジェクトに適用）:**
+
+```bash
+cp hooks/codex-hooks.json ~/.codex/hooks.json
+```
+
+`~/.codex/hooks.json` が既に存在する場合は、中身をマージしてください
+（同一レイヤーに `hooks.json` と `config.toml` の `[hooks]` テーブルが両方存在すると、
+Codexは両方を読み込んだ上で警告を表示します）。
+
+**プロジェクト単位の設定:**
+
+```bash
+mkdir -p .codex
+cp hooks/codex-hooks.json .codex/hooks.json
+```
+
+### 4-3. フックの信頼（Hook Trust）
+
+Codexは非管理（unmanaged）のフックを初回実行時にレビュー・承認する必要があります。
+インタラクティブセッションでは `/hooks` コマンドから有効化・確認できます。
+設定後は新しいセッションを開始すると反映されます。
+
+### 4-4. Claude Code との差分・制限事項
+
+| 機能 | Claude Code | Codex CLI |
+|---|---|---|
+| 思考中・ツール実行中の表示 | ✅ | ✅ |
+| サブエージェント実行の表示 | - | -（`SubagentStart`/`SubagentStop`は未対応） |
+| 入力待ちの表示 | ✅（`Notification: idle_prompt`） | ❌（相当するイベントなし。`toolRunning`が一定時間続くと`stalled`表示で代替） |
+| 権限確認の表示 | ✅ | ✅（`PermissionRequest`イベント。承認/PreToolUse系は動作未実測、公式ドキュメントに基づく実装） |
+| モデル名の表示 | ✅ | ✅（`SessionStart`/`UserPromptSubmit`/`SessionEnd`で実測確認済み） |
+| セッション自動削除 | ✅ | ✅（`SessionEnd`発火を実測確認済み。timeoutは3秒にクランプされる。念のため上限20件の自動evictもフォールバックとして機能） |
+
+補足:
+- Codexのフックは `tool_name`/`tool_input` のスキーマが今後拡張される可能性があります
+  （現時点ではシェル実行系のツールが中心）。`hooks/codex-hook.sh` は `tool_input.command` /
+  `file_path` / `path` を優先的に拾い、配列やその他の型が来ても文字列化して扱います。
+- `matcher` フィールドに `"*"` 等を指定すると、動作確認した環境（codex-cli 0.149.1）では
+  フック自体が発火しませんでした。`hooks/codex-hooks.json` では意図的に `matcher` を省略しています。
+- `PreToolUse`/`PermissionRequest` はブロック判定を伴う可能性があるイベントのため `async` を付けていません。
+  それ以外（`SessionStart`/`UserPromptSubmit`/`PostToolUse`/`Stop`/`SessionEnd`）は `async: true` にして
+  本体の処理をブロックしないようにしています。
+

@@ -29,7 +29,7 @@ class StatusStore: ObservableObject {
         let now = Date()
         var changed = false
         for key in sessions.keys {
-            if sessions[key]?.source == "copilot",
+            if sessions[key]?.source != "claude-code",
                sessions[key]?.status == .toolRunning,
                let last = sessions[key]?.lastEventAt,
                now.timeIntervalSince(last) >= Self.stalledThreshold {
@@ -107,6 +107,11 @@ class StatusStore: ObservableObject {
     }
 
     private func applyEvent(_ event: HookEvent, to session: inout SessionState) {
+        // Codexはほぼ全イベントにmodelを含むため、毎回反映しておく
+        if let model = event.model {
+            session.model = model
+        }
+
         switch event.event {
         case "UserPromptSubmit":
             session.status = .thinking
@@ -133,14 +138,15 @@ class StatusStore: ObservableObject {
                 session.status = .waitingInput
             }
 
+        case "PermissionRequest":
+            // Codex固有イベント。Claude Codeの Notification(permission_prompt) 相当
+            session.status = .permissionPrompt
+
         case "Stop":
             session.status = .done
 
         case "SessionStart":
             session.status = .idle
-            if let model = event.model {
-                session.model = model
-            }
 
         default:
             break

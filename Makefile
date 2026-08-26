@@ -67,6 +67,15 @@ setup-hooks:
 	chmod +x $(HOOK_DIR)/copilot-hook.sh
 	mkdir -p $(HOME)/.copilot/hooks
 	cp hooks/copilot-hooks.json $(HOME)/.copilot/hooks/ai-progress-monitor.json
+	cp hooks/codex-hook.sh $(HOOK_DIR)/codex-hook.sh
+	chmod +x $(HOOK_DIR)/codex-hook.sh
+	mkdir -p $(HOME)/.codex
+	@if [ -f $(HOME)/.codex/hooks.json ]; then \
+		echo "WARNING: ~/.codex/hooks.json already exists — not overwritten."; \
+		echo "         Merge hooks/codex-hooks.json manually (see docs/setup.md)."; \
+	else \
+		cp hooks/codex-hooks.json $(HOME)/.codex/hooks.json; \
+	fi
 	@echo "Hooks installed."
 
 ## ビルド成果物を削除
